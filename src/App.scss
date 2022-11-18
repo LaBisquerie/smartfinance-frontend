@@ -11,6 +11,7 @@
 @import '~bootstrap/scss/type';
 
 // Import layouts
-@import './styles/layouts/footer.scss';
+@import './styles/layouts/footer';
 
-// Import pages
+// Import components
+@import './styles/components/sidebar';
