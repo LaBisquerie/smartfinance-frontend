@@ -7,7 +7,6 @@ function App() {
     <div className="App">
       <header className="header">
         <h1>WELCOME IN SMARTFINANCE</h1>
-        {/* <img src={logo} alt="" /> */}
       </header>
       <div className="page-content">
         <p>
