@@ -4,8 +4,11 @@
 // Import Fonts
 @import "./styles/fonts";
 
-// Import bootstrap
-@import '~bootstrap/scss/bootstrap.scss';
+// Import bootstrap components
+@import '~bootstrap/scss/bootstrap-grid';
+@import '~bootstrap/scss/bootstrap-utilities';
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/type';
 
 // Import layouts
 @import './styles/layouts/header.scss';
