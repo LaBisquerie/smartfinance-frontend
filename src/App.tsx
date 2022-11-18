@@ -1,16 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
+import LoginPage from './pages/Login';
+import HomePage from './pages/Home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="header">
-        <h1>WELCOME IN SMARTFINANCE</h1>
-        <img src={logo} alt="" />
-      </header>
-    </div>
-  );
-}
+export interface IAppProps {}
+
+const App: React.FC<IAppProps> = (props) => {
+    return (
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+        </Routes>
+    );
+};
 
 export default App;
