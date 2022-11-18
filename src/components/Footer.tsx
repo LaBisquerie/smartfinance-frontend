@@ -29,7 +29,7 @@ function Footer() {
                 <h3 className='footer-link__title'>Retrouvez-nous</h3>
                 <ul className='footer-link__list list-unstyled'>
                   <li className="footer-link__item">Ynov Campus</li>
-                  <li className="footer-link__item">2 places de l'europe 31000 Toulouse</li>
+                  <li className="footer-link__item space">2 places de l'europe <br />31000 Toulouse</li>
                   <li className="footer-link__item">+33 5 82 95 10 48</li>
                 </ul>
               </div>
