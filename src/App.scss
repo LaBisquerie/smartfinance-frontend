@@ -5,12 +5,10 @@
 @import "./styles/fonts";
 
 // Import bootstrap components
-@import '~bootstrap/scss/bootstrap-grid';
-@import '~bootstrap/scss/bootstrap-utilities';
-@import '~bootstrap/scss/bootstrap-reboot';
-@import '~bootstrap/scss/type';
+@import "~bootstrap/scss/bootstrap";
 
 // Import layouts
-@import './styles/layouts/footer.scss';
+@import './styles/layouts/footer';
 
-// Import pages
+// Import components
+@import './styles/components/sidebar';
