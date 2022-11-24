@@ -2,7 +2,7 @@
 @import './styles/base';
 
 // Import Fonts
-@import "./styles/fonts";
+@import './styles/fonts';
 
 // Import bootstrap components
 @import '~bootstrap/scss/bootstrap-grid';
@@ -11,6 +11,8 @@
 @import '~bootstrap/scss/type';
 
 // Import layouts
-@import './styles/layouts/footer.scss';
+@import './styles/layouts/footer';
+@import './styles/layouts/header';
 
-// Import pages
+// Import components
+@import './styles/components/auth';

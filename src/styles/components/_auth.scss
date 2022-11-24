@@ -1,0 +1,93 @@
+.auth {
+    color: $white;
+}
+
+.Login {
+    margin-top: 65px;
+    margin-bottom: 65px;
+}
+
+.Register {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.register__link {
+    color: inherit;
+}
+
+.auth-box {
+    background-color: $primary;
+    border-radius: 25px;
+}
+
+.auth-header {
+    margin: auto;
+}
+
+.form-items {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+    }
+}
+
+.form-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+
+    @include media-breakpoint-up(md) {
+        width: 48%;
+    }
+
+    input {
+        border-radius: 10px;
+        border: 1px solid white;
+        padding: 0.5rem;
+    }
+
+    &.form-item__mail {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    &.log {
+        width: 100%;
+    }
+}
+
+.auth-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.form-footer__text {
+    text-align: center;
+}
+
+.form-footer__btn {
+    background-color: $primary;
+    color: $white;
+    border: 1px solid;
+    border-color: $white;
+    border-radius: 50rem;
+    padding: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+}
