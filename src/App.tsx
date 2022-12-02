@@ -12,7 +12,7 @@ export interface IAppProps {}
 
 function App() {
     const toto = false;
-    if (toto) {
+    if (!toto) {
         return (
             <>
                 <div className="App">

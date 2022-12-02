@@ -7,6 +7,7 @@
   color: $white;
   display: flex;
   transition: width .2s ease-in-out;
+  height: 80vh;
 
   @include media-breakpoint-up(md) {
     width: 16.25rem;
