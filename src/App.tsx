@@ -6,20 +6,24 @@ import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import RegisterPage from './pages/Register';
 import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 
 export interface IAppProps {}
 
-const App: React.FC<IAppProps> = (props) => {
+function App() {
     return (
         <div className="App">
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-            </Routes>
+            <div className="app-container">
+                <Sidebar />
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                </Routes>
+            </div>
             <Footer />
         </div>
     );
-};
+}
 
 export default App;

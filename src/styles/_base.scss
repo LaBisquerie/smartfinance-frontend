@@ -9,4 +9,10 @@ body {
   width: 100%;
   overflow-x: hidden;
   font-family: 'Sk-Modernist' !important;
+.page-content {
+  min-height: 90vh;
+}
+
+.app-container {
+  display: flex;
 }
