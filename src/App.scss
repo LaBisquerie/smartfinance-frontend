@@ -2,13 +2,16 @@
 @import './styles/base';
 
 // Import Fonts
-@import "./styles/fonts";
+@import './styles/fonts';
 
 // Import bootstrap components
-@import "~bootstrap/scss/bootstrap";
+@import '~bootstrap/scss/bootstrap';
 
 // Import layouts
 @import './styles/layouts/footer';
 
+@import './styles/layouts/header';
+
 // Import components
+@import './styles/components/auth';
 @import './styles/components/sidebar';

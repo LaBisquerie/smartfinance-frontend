@@ -1,18 +1,25 @@
 html {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 body {
-  margin: 0;
-  padding: 0 !important;
-  box-sizing: border-box;
-  width: 100%;
-  overflow-x: hidden;
-  font-family: 'Sk-Modernist' !important;
-.page-content {
-  min-height: 90vh;
+    margin: 0;
+    padding: 0 !important;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: 'Sk-Modernist' !important;
+    .page-content {
+        min-height: 90vh;
+    }
 }
 
 .app-container {
-  display: flex;
+    display: flex;
+}
+
+.not-logged {
+    .app-container {
+        flex-direction: column;
+    }
 }
