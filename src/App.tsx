@@ -5,6 +5,7 @@ import './App.scss';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import RegisterPage from './pages/Register';
+import SettingsPage from './pages/Settings';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 
@@ -22,6 +23,8 @@ function App() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/settings" element={<SettingsPage />} />
+
                         </Routes>
                     </div>
                     <Footer />
