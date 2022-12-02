@@ -10,7 +10,7 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = () => {
             <Header />
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-10 col-lg-7">
+                    <div className="col-md-10 col-lg-6">
                         <div className="Login auth py-5">
                             <div className="LoginBox auth-box py-5 px-5">
                                 <div className="LoginContent auth-content">
