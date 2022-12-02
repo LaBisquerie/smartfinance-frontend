@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
+import RevenuPage from './pages/Revenu';
 import RegisterPage from './pages/Register';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
@@ -20,6 +21,7 @@ function App() {
                         <Sidebar />
                         <Routes>
                             <Route path="/" element={<HomePage />} />
+                            <Route path="/revenu" element={<RevenuPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
                         </Routes>
@@ -35,6 +37,7 @@ function App() {
                     <div className="app-container">
                         <Routes>
                             <Route path="/" element={<HomePage />} />
+                            <Route path="/revenu" element={<RevenuPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
                         </Routes>
