@@ -18,7 +18,7 @@ type AuthContextType = {
   setUser: (user:User|null)=>void;
   authTokens : Token|null;
   setAuthTokens : (token:Token|null)=>void;
-  registerUser : (username : string, password : string, password2 : string)=>Promise<void>;
+  registerUser : (username : string, password : string, password2 : string, first_name : string, last_name : string)=>Promise<void>;
   loginUser : (username : string, password : string)=>Promise<void>;
   logoutUser : ()=>void;
 }
@@ -68,16 +68,18 @@ export const AuthProvider = ({ children } : PropsWithChildren<unknown>) => {
     }
   };
 
-  const registerUser = async (username : string, password : string, password2 : string) => {
-    const response = await fetch("http://127.0.0.1:8000/api/accounts/register", {
+  const registerUser = async (email : string, password : string, password2 : string, first_name : string, last_name : string) => {
+    const response = await fetch("http://127.0.0.1:8000/api/accounts/register/", {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        username,
+        email: email,
         password,
-        password2
+        password2,
+        first_name,
+        last_name
       })
     });
 

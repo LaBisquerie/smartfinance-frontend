@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import { useAuth } from '../context/AuthContext';
 
 interface RegisterPageProps {}
 
 const RegisterPage: React.FunctionComponent<RegisterPageProps> = () => {
+    const { registerUser } = useAuth();
+    const [firstName, setFirstname] = useState('');
+    const [lastname, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+
+    const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (password === passwordConfirm) registerUser(email, password, passwordConfirm, firstName, lastname)
+    }
+
     return (
         <>
             <Header />
@@ -17,31 +30,31 @@ const RegisterPage: React.FunctionComponent<RegisterPageProps> = () => {
                                     <div className="RegisterHeader auth-header">
                                         <h1>Inscription</h1>
                                     </div>
-                                    <form>
+                                    <form onSubmit={handleSubmit}>
                                         <div className="form-items py-2">
                                             <div className="form-item">
                                                 <label className="form-label">Prénom</label>
-                                                <input type="firstName" className="form-control" id="inputFirstName" />
+                                                <input type="text" className="form-control" id="firstname" name='firstname' onChange={(e) => setFirstname(e.target.value)} value={firstName} required/>
                                             </div>
                                             <div className="form-item">
                                                 <label className="form-label">Nom</label>
-                                                <input type="lastName" className="form-control" id="inputLastName" />
+                                                <input type="text" className="form-control" id="lastname" name='lastname' onChange={(e) => setLastName(e.target.value)} value={lastname} required/>
                                             </div>
                                         </div>
                                         <div className="form-items py-2">
                                             <div className="form-item form-item__mail">
                                                 <label className="form-label">E-mail</label>
-                                                <input type="email" className="form-control" id="inputName" />
+                                                <input type="email" className="form-control" id="email" name='email' onChange={(e) => setEmail(e.target.value)} value={email} required/>
                                             </div>
                                         </div>
                                         <div className="form-items py-2">
                                             <div className="form-item">
                                                 <label className="form-label">Mot de passe</label>
-                                                <input type="password" className="form-control" id="inputPassword" />
+                                                <input type="password" className="form-control" id="password" name='password' onChange={(e) => setPassword(e.target.value)} value={password} required/>
                                             </div>
                                             <div className="form-item">
                                                 <label className="form-label">Confirmer le mot de passe</label>
-                                                <input type="password" className="form-control" id="inputPasswordConfirm" />
+                                                <input type="password" className="form-control" id="passwordConfirm" name='passwordConfirm' onChange={(e) => setPasswordConfirm(e.target.value)} value={passwordConfirm} required/>
                                             </div>
                                         </div>
                                         <div className="form-footer">
