@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import { useAuth } from '../context/AuthContext';
 
 export interface LoginPageProps {}
 
 const LoginPage: React.FunctionComponent<LoginPageProps> = () => {
+    const { loginUser } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        email.length > 0 && loginUser(email, password);
+    };
+
     return (
         <>
             <Header />
@@ -17,17 +27,17 @@ const LoginPage: React.FunctionComponent<LoginPageProps> = () => {
                                     <div className="LoginHeader auth-header">
                                         <h1>Connexion</h1>
                                     </div>
-                                    <form>
+                                    <form onSubmit={handleSubmit}>
                                         <div className="form-items py-2">
                                             <div className="form-item log">
-                                                <label className="form-label">Email</label>
-                                                <input type="email" className="form-control" id="InputEmail" />
+                                                <label className="form-label" htmlFor='email'>Email</label>
+                                                <input type="email" className="form-control" id="email" name='email' placeholder='Email' onChange={(e) => setEmail(e.target.value)} value={email} required/>
                                             </div>
                                         </div>
                                         <div className="form-items py-2">
                                             <div className="form-item log">
-                                                <label className="form-label">Mot de passe</label>
-                                                <input type="password" className="form-control" id="InputPassword" />
+                                                <label className="form-label" htmlFor='password'>Mot de passe</label>
+                                                <input type="password" className="form-control" id="password" placeholder='Mot de passe' onChange={(e) => setPassword(e.target.value)} value={password} required/>
                                             </div>
                                         </div>
                                         <div className="form-footer">

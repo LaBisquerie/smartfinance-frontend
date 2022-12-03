@@ -1,9 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
 import App from './App';
+import { AuthProvider } from './context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 const container = document.getElementById('root')!;
@@ -11,11 +10,11 @@ const root = createRoot(container);
 
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <App />
-            </BrowserRouter>
-        </Provider>
+            </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>
 );
 

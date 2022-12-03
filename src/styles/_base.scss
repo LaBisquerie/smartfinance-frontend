@@ -13,12 +13,14 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 
-.page-content {
-  min-height: 90vh;
-}
-
 .app-container {
-    display: flex;
+  display: flex;
+  min-height: 100vh;
+  padding-left: 4.375rem;
+
+  @include media-breakpoint-up(md) {
+    padding-left: 0;
+  }
 }
 
 .not-logged {
