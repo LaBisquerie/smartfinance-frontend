@@ -17,4 +17,9 @@
 .header-nav__link {
     color: inherit;
     text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+        color: inherit;
+    }
 }
