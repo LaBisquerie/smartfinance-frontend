@@ -8,6 +8,8 @@ import Sidebar from './components/Sidebar';
 import { useAuth } from './context/AuthContext';
 import TopPage from './components/TopPage';
 import PrivateRoute from './utils/PrivateRoute';
+import RevenuPage from './pages/Revenu';
+import DepensePage from './pages/Depense';
 
 export interface IAppProps { }
 
@@ -18,7 +20,7 @@ function App() {
             <div className="App">
                 <div className="app-container">
                     {user != null ? <Sidebar /> : null}
-                    <div className='w-100'>
+                    <div className='w-100 app-content'>
                         {user != null ? <TopPage /> : null}
                         <Routes>
                             <Route path="/" element={
@@ -28,6 +30,8 @@ function App() {
                             } />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
+                            <Route path='/revenus' element={<RevenuPage />} />
+                            <Route path='/depenses' element={<DepensePage />} />
                         </Routes>
                     </div>
                 </div>
