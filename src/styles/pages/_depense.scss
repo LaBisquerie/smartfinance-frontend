@@ -144,3 +144,56 @@
         color: $primary;
     }
 }
+
+.depense-table {
+    border-color: red;
+    background-color: $white;
+    border-radius: .5rem;
+}
+
+.depense-table__header {
+    padding: 2rem;
+    padding-bottom: 1rem;
+    color: $light-gray;
+    font-weight: 400;
+}
+
+.depense-table__item {
+    padding: 1rem 2rem;
+    font-size: .875rem;
+}
+
+.depense-table__item--title {
+    color: $light-gray;
+}
+
+.depense-table__item--amount {
+    color: #01058A;
+}
+
+.depense-table__item--actions {
+    display: flex;
+    gap: .5rem;
+}
+
+.depense-table__item--update {
+    color: $primary;
+    font-size: 1.5em;
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .6;
+        cursor: pointer;
+    }
+}
+
+.depense-table__item--delete {
+    color: $red;
+    font-size: 1.5em;
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+        opacity: .6;
+        cursor: pointer;
+    }
+}

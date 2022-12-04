@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {IoIosClose} from 'react-icons/io';
+import { TiDelete } from 'react-icons/ti';
+import { HiOutlinePencilAlt } from 'react-icons/hi'
 
 export interface DepensePageProps {}
 
@@ -16,7 +18,7 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
     const [categories, setCategories] : any = useState();
     const [selectedCategoryLabel, setSelectedCategoryLabel] : any = useState();
     const [selectedCategoryValue, setSelectedCategoryValue] : any = useState();
-    const today = format(new Date(), 'yyyy-mm-dd');
+    const today = format(new Date(), 'yyyy-MM-dd');
     let [selectedDate, setSelectedDate] : any = useState(null);
     const toggleForm = () => {
         setDepenseForm(!depenseForm);
@@ -44,7 +46,7 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         .catch(err => console.log(err))
     }, [])
 
-    const createBudget = async (categorie_name : string, short_description : string, montant : number, date : string, categorie : number) => {
+    const createDepense = async (categorie_name : string, short_description : string, montant : number, date : string, categorie : number) => {
         const response = await fetch("http://localhost:8000/api/budgets/", {
             method: 'POST',
             headers: {
@@ -70,9 +72,34 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         }
     }
 
+    // const updateDepense = async (categorie_name : string, short_description : string, montant : number, date : string, categorie : number) => {
+    //     const response = await fetch(`http://localhost:8000/api/budgets/${revenuId}/`, {
+    //         method: 'PUT',
+    //         headers: { "Content-Type": "application/json" },
+    //         body: JSON.stringify({
+    //             categorie_name,
+    //             short_description,
+    //             montant,
+    //             type: 'OUTCOME',
+    //             date,
+    //             categorie,
+    //             utilisateur: user?.user_id
+    //         })
+    //     });
+
+    //     const data = await response.json();
+    //     console.log(data);
+    // }
+
+    const deleteDepense = async (revenuId : number) => {
+        const response = await fetch(`http://localhost:8000/api/budgets/${revenuId}/`, {
+            method: 'DELETE'
+        })
+    }
+
     const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createBudget(selectedCategoryLabel, descBudget, amount, format(selectedDate, 'yyyy-MM-dd'), selectedCategoryValue);
+        createDepense(selectedCategoryLabel, descBudget, amount, format(selectedDate, 'yyyy-MM-dd'), selectedCategoryValue);
         setDepenseForm(!depenseForm);
     }
 
@@ -125,18 +152,34 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
                         </div>
                     </div>
                 )}
-            {depenses?.map((depense :any) => {
-                if (user?.user_id === depense.utilisateur && depense.type === 'OUTCOME') {
-                    return (
-                        <>
-                            <p>desc : {depense.short_description}</p>
-                            <p>date : {depense.date}</p>
-                            <p>montant{depense.montant}</p>
-                            <p>catégorie: {depense.categorie_name}</p>
-                        </>
-                    )
-                }
-                })}
+                <div className="depense-list">
+                    <table className="depense-table">
+                        <tr>
+                            <th className='depense-table__header'>Opération</th>
+                            <th className='depense-table__header'>Date</th>
+                            <th className='depense-table__header'>Montant</th>
+                            <th className='depense-table__header'>Actions</th>
+                        </tr>
+                        {depenses?.map((depense :any) => {
+                            if (user?.user_id === depense.utilisateur && depense.type === 'OUTCOME') {
+                                return (
+                                    <>
+                                        <tr className='depense-table__item'>
+                                            <td className='depense-table__item depense-table__item--title'>{depense.short_description}</td>
+                                            <td className='depense-table__item depense-table__item--date'>{depense.date}</td>
+                                            <td className='depense-table__item depense-table__item--amount'>{depense.montant} €</td>
+                                            <td className='depense-table__item depense-table__item--actions'>
+                                                <HiOutlinePencilAlt className='depense-table__item--update'/>
+                                                {/* Ajouter une popup de verification afin de valider la verification */}
+                                                <TiDelete className='depense-table__item--delete' onClick={() => deleteDepense(depense.id)} />
+                                            </td>
+                                        </tr>
+                                    </>
+                                )
+                            }
+                        })}
+                    </table>
+                </div>
             </div>
         </>
     );
