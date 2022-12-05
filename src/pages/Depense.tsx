@@ -67,6 +67,10 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         console.log({data});
         if(response.status === 200 || response.status === 201) {
             console.log('work');
+            fetch('http://localhost:8000/api/budgets/')
+                .then(response => response.json())
+                .then(res => setDepenses(res))
+                .catch(err => console.log(err))
         } else {
             console.log("Something went wrong !");
         }
@@ -95,6 +99,11 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         const response = await fetch(`http://localhost:8000/api/budgets/${revenuId}/`, {
             method: 'DELETE'
         })
+
+        fetch('http://localhost:8000/api/budgets/')
+            .then(response => response.json())
+            .then(res => setDepenses(res))
+            .catch(err => console.log(err))
     }
 
     const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
