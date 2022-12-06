@@ -1,12 +1,12 @@
 import React, { Fragment, SyntheticEvent, useEffect, useState } from 'react';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 import { useAuth } from '../context/AuthContext';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {IoIosClose} from 'react-icons/io';
 import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export interface DepensePageProps {}

@@ -1,0 +1,48 @@
+.top-page {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-page__name {
+    font-weight: 600;
+    font-size: 1.375rem;
+}
+
+.top-page__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.top-page__icon {
+    border-radius: 50%;
+}
+
+.top-page__logout {
+    background-color: #dc3545;
+    border: 2px solid #dc3545;
+    border-radius: 50rem;
+    display: flex;
+    height: 2.8125rem;
+    width: 2.8125rem;
+    justify-content: center;
+    align-items: center;
+    transition: background-color .2s ease-in-out;
+
+    &:hover {
+        background-color: $white;
+
+        .top-page__logout-icon {
+            color: #dc3545;
+        }
+    }
+}
+
+.top-page__logout-icon {
+    color: $white;
+    transition: color .2s ease-in-out;
+    font-size: 2rem;
+}

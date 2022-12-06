@@ -6,6 +6,7 @@ import { useContext } from "react"
 export type User = {
   user_id: string;
   exp: number;
+  first_name: string;
 }
 
 export type Token = {
