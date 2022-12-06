@@ -1,9 +1,14 @@
 .top-page {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @include media-breakpoint-up(md) {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
 }
 
 .top-page__name {
@@ -14,7 +19,15 @@
 .top-page__right {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: .5rem;
+
+    @include media-breakpoint-up(md) {
+        gap: 1rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+        gap: 2rem;
+    }
 }
 
 .top-page__icon {
@@ -26,8 +39,8 @@
     border: 2px solid #dc3545;
     border-radius: 50rem;
     display: flex;
-    height: 2.8125rem;
-    width: 2.8125rem;
+    height: 2.75rem;
+    width: 2.75rem;
     justify-content: center;
     align-items: center;
     transition: background-color .2s ease-in-out;

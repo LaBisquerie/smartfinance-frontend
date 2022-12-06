@@ -19,7 +19,7 @@ function App() {
     return (
         <>
             <div className="App">
-                <div className="app-container">
+                <div className={`${user != null ? 'app-container' : null}`}>
                     {user != null ? <Sidebar /> : null}
                     <div className={`w-100 ${user != null ? 'app-content' : null}`}>
                         {user != null ? <TopPage /> : null}
