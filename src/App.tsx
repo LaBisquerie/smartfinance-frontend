@@ -20,7 +20,7 @@ function App() {
             <div className="App">
                 <div className="app-container">
                     {user != null ? <Sidebar /> : null}
-                    <div className='w-100 app-content'>
+                    <div className={`w-100 ${user != null ? 'app-content' : null}`}>
                         {user != null ? <TopPage /> : null}
                         <Routes>
                             <Route path="/" element={

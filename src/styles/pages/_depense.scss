@@ -28,13 +28,8 @@
 .depense-header {
     display: flex;
     justify-content: space-between;
-    flex-direction: column;
+    align-items: center;
     margin-bottom: 3rem;
-
-    @include media-breakpoint-up(lg) {
-        flex-direction: row;
-        align-items: center;
-    }
 }
 
 .depense-header__title {
@@ -51,6 +46,15 @@
         background-color: $white;
         color: $primary;
     }
+}
+
+.depense-header__btn {
+    padding: .5rem;
+}
+
+.depense-header__btn-icon {
+    font-size: 1.5rem;
+    color: $white;
 }
 
 .depense-content {
@@ -152,15 +156,23 @@
 }
 
 .depense-table__header {
-    padding: 2rem;
+    padding: 1rem;
     padding-bottom: 1rem;
     color: $light-gray;
     font-weight: 400;
+
+    @include media-breakpoint-up(lg) {
+        padding: 2rem;
+    }
 }
 
 .depense-table__item {
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     font-size: .875rem;
+
+    @include media-breakpoint-up(lg) {
+        padding: 1rem 2rem;
+    }
 }
 
 .depense-table__item--title {
@@ -196,4 +208,38 @@
         opacity: .6;
         cursor: pointer;
     }
+}
+
+.depense-delete-modal__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.depense-delete-modal__icon {
+    font-size: 6rem;
+    color: #dc3545;
+}
+
+.depense-delete-modal__title {
+    @include font-size(1.5rem);
+}
+
+.depense-delete-modal__body {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.depense-delete__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+.depense-delete-modal__btn {
+    padding: .75rem;
 }
