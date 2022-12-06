@@ -23,6 +23,22 @@ body {
   }
 }
 
+.app-content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: #FAFAFD;
+
+  @include media-breakpoint-up(md) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
 .not-logged {
     .app-container {
         flex-direction: column;
