@@ -1,11 +1,11 @@
 @import './styles/variables';
+// Import bootstrap components
+@import '~bootstrap/scss/bootstrap';
+
 @import './styles/base';
 
 // Import Fonts
 @import './styles/fonts';
-
-// Import bootstrap components
-@import '~bootstrap/scss/bootstrap';
 
 // Import layouts
 @import './styles/layouts/footer';
@@ -15,5 +15,10 @@
 // Import components
 @import './styles/components/auth';
 @import './styles/components/sidebar';
+
 @import './styles/pages/settings';
+
+
+@import './styles/components/revenu';
+@import './styles/pages/depense';
 
