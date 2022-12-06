@@ -1,20 +1,22 @@
 .sidebar {
   width: 4rem;
   flex-direction: column;
+  z-index: 99;
   top: 0;
   left: 0;
   background-color: $light-blue;
   color: $white;
   display: flex;
   transition: width .2s ease-in-out;
-  height: 80vh;
+  position: fixed;
 
   @include media-breakpoint-up(md) {
-    width: 16.25rem;
+    min-width: 16.25rem;
+    position: initial;
   }
 
   &.open {
-    width: 16.25rem;
+    min-width: 16.25rem;
 
     .sidebar-header {
       text-align: left;

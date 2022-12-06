@@ -1,49 +1,44 @@
-import React from 'react';
-
 import { Routes, Route } from 'react-router-dom';
 import './App.scss';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import RegisterPage from './pages/Register';
+import SettingsPage from './pages/Settings';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
+import { useAuth } from './context/AuthContext';
+import TopPage from './components/TopPage';
+import PrivateRoute from './utils/PrivateRoute';
+import RevenuPage from './pages/Revenu';
+import DepensePage from './pages/Depense';
 
-export interface IAppProps {}
+export interface IAppProps { }
 
 function App() {
-    const toto = false;
-    if (!toto) {
-        return (
-            <>
-                <div className="App">
-                    <div className="app-container">
-                        <Sidebar />
+    let { user } = useAuth();
+    return (
+        <>
+            <div className="App">
+                <div className={`${user != null ? 'app-container' : null}`}>
+                    {user != null ? <Sidebar /> : null}
+                    <div className={`w-100 ${user != null ? 'app-content' : null}`}>
+                        {user != null ? <TopPage /> : null}
                         <Routes>
-                            <Route path="/" element={<HomePage />} />
+                            <Route path="/" element={
+                                <PrivateRoute>
+                                    <HomePage />
+                                </PrivateRoute>
+                            } />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
+                            <Route path='/revenus' element={<RevenuPage />} />
+                            <Route path='/depenses' element={<DepensePage />} />
                         </Routes>
                     </div>
-                    <Footer />
                 </div>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <div className="App not-logged">
-                    <div className="app-container">
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/register" element={<RegisterPage />} />
-                        </Routes>
-                    </div>
-                    <Footer />
-                </div>
-            </>
-        );
-    }
+                <Footer />
+            </div>
+        </>
+    );
 }
-
 export default App;

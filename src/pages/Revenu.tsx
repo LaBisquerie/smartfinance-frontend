@@ -69,6 +69,7 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                         </div>
                     )}
                 </div>
+<<<<<<< HEAD
                 <div className="row">
                     <div className="Chart">
                         <div className="card">
@@ -76,6 +77,8 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                         </div>
                     </div>
                 </div>
+=======
+>>>>>>> fa216927c7f490b7888ee23474b8fb579a81ea43
             </div>
         </>
     );
