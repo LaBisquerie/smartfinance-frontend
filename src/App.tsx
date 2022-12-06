@@ -3,6 +3,7 @@ import './App.scss';
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
 import RegisterPage from './pages/Register';
+import SettingsPage from './pages/Settings';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import { useAuth } from './context/AuthContext';
