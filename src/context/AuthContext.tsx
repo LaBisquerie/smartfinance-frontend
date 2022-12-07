@@ -7,6 +7,7 @@ export type User = {
   user_id: string;
   exp: number;
   first_name: string;
+  last_name: string;
 }
 
 export type Token = {
