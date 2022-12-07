@@ -8,7 +8,7 @@ import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import BarChart from '../components/BarChart';
+import BarChart from '../components/BarChart';
 
 
 export interface RevenuPageProps {}
@@ -235,32 +235,40 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                         </div>
                     </div>
                 )}
+                <div className="revenu-graph">
+                    <BarChart revenus={revenus ?? []} />
+                </div>
                 <div className="revenu-list">
                     <div className="table-responsive-sm">
                         <table className="revenu-table">
-                            <tr>
-                                <th className='revenu-table__header'>Opération</th>
-                                <th className='revenu-table__header'>Date</th>
-                                <th className='revenu-table__header'>Montant</th>
-                                <th className='revenu-table__header'>Actions</th>
-                            </tr>
-                            {revenus?.map((revenu) => {
-                                if (user?.user_id === revenu.utilisateur && revenu.type === 'INCOME') {
-                                    return (
-                                        <Fragment key={revenu.id}>
-                                            <tr className='revenu-table__item'>
-                                                <td className='revenu-table__item revenu-table__item--title'>{revenu.short_description}</td>
-                                                <td className='revenu-table__item revenu-table__item--date'>{revenu.date}</td>
-                                                <td className='revenu-table__item revenu-table__item--amount'>{revenu.montant} €</td>
-                                                <td className='revenu-table__item revenu-table__item--actions'>
-                                                    <HiOutlinePencilAlt className='revenu-table__item--update' onClick={() => toggleUpdateForm(revenu)}/>
-                                                    <TiDelete className='revenu-table__item--delete' onClick={() => toggleDeleteForm(revenu)} />
-                                                </td>
-                                            </tr>
-                                        </Fragment>
-                                    )
-                                }
-                            })}
+                            <thead>
+                                <tr>
+                                    <th className='revenu-table__header'>Opération</th>
+                                    <th className='revenu-table__header'>Date</th>
+                                    <th className='revenu-table__header'>Montant</th>
+                                    <th className='revenu-table__header'>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>    
+                                {revenus?.map((revenu) => {
+                                    if (user?.user_id === revenu.utilisateur && revenu.type === 'INCOME') {
+                                        return (
+                                            <Fragment key={revenu.id}>
+                                                <tr className='revenu-table__item'>
+                                                    <td className='revenu-table__item revenu-table__item--title'>{revenu.short_description}</td>
+                                                    <td className='revenu-table__item revenu-table__item--date'>{revenu.date}</td>
+                                                    <td className='revenu-table__item revenu-table__item--amount'>{revenu.montant} €</td>
+                                                    <td className='revenu-table__item revenu-table__item--actions'>
+                                                        <HiOutlinePencilAlt className='revenu-table__item--update' onClick={() => toggleUpdateForm(revenu)}/>
+                                                        <TiDelete className='revenu-table__item--delete' onClick={() => toggleDeleteForm(revenu)} />
+                                                    </td>
+                                                </tr>
+                                            </Fragment>
+                                        )
+                                    }
+                                    return null;
+                                })}
+                            </tbody>
                         </table>
                     </div>
                     {updateRevenuForm && (
