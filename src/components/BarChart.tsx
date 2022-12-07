@@ -1,7 +1,7 @@
 import 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 import type { ChartProps } from 'react-chartjs-2';
-import { Revenu } from '../pages/Revenu';
+import { Revenu } from '../pages/Revenus';
 
 interface Props {
     revenus: Revenu[];

@@ -9,7 +9,7 @@ import Sidebar from './components/Sidebar';
 import { useAuth } from './context/AuthContext';
 import TopPage from './components/TopPage';
 import PrivateRoute from './utils/PrivateRoute';
-import RevenuPage from './pages/Revenu';
+import RevenuPage from './pages/Revenus';
 import DepensePage from './pages/Depense';
 
 export interface IAppProps { }
@@ -31,7 +31,7 @@ function App() {
                             } />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
-                            <Route path='/revenu' element={<RevenuPage />} />
+                            <Route path='/revenus' element={<RevenuPage />} />
                             <Route path='/depenses' element={<DepensePage />} />
                             <Route path='/settings' element={<SettingsPage />} />
                         </Routes>
