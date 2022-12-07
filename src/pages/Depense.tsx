@@ -8,6 +8,7 @@ import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DepenseChart from '../components/DepenseChart';
 
 export interface DepensePageProps {}
 
@@ -193,6 +194,7 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
                         <TiPlus className='depense-header__btn-icon' />
                     </button>
                 </div>
+                <DepenseChart />
                 {depenseForm && (
                     <div className="depense">
                         <div className="overlay">

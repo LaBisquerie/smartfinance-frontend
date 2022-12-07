@@ -34,7 +34,6 @@ function App() {
                             <Route path='/revenu' element={<RevenuPage />} />
                             <Route path='/depenses' element={<DepensePage />} />
                             <Route path='/settings' element={<SettingsPage />} />
-
                         </Routes>
                     </div>
                 </div>
