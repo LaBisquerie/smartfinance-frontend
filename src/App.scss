@@ -1,8 +1,23 @@
 @import './styles/variables';
+// Import bootstrap components
+@import '~bootstrap/scss/bootstrap';
+
 @import './styles/base';
 
-// Import layouts
-@import './styles/layouts/header.scss';
-@import './styles/layouts/footer.scss';
+// Import Fonts
+@import './styles/fonts';
 
-// Import pages
+// Import layouts
+@import './styles/layouts/footer';
+
+@import './styles/layouts/header';
+
+// Import components
+@import './styles/components/auth';
+@import './styles/components/sidebar';
+
+@import './styles/pages/settings';
+
+@import './styles/components/top-page';
+@import './styles/pages/revenu';
+@import './styles/pages/depense';
