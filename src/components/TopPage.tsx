@@ -15,7 +15,7 @@ const TopPage: React.FunctionComponent<TopPage> = () => {
     .catch(err => console.log(err))
   }, [])
 
-  console.log(username);
+
 
   return (
     <div className="top-page">
