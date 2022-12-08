@@ -5,12 +5,12 @@ export interface IHomePageProps { }
 const HomePage: React.FunctionComponent<IHomePageProps> = () => {
     return (
         <div className='home-main-container'>
-            <div className="cards-container">
+            <div className="cards-container text-center">
                 <div className="card">
                     <div className="card-body">
-                        <blockquote className="blockquote mb-0">
-                            <p>A well-known quote, contained in a blockquote element.</p>
-                            <footer className="blockquote-footer mt-3">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                        <blockquote className="blockquote mb-0 ">
+                            <p>Solde</p>
+                            <footer className="mt-3">2800€</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -18,8 +18,8 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                 <div className="card">
                     <div className="card-body">
                         <blockquote className="blockquote mb-0">
-                            <p>A well-known quote, contained in a blockquote element.</p>
-                            <footer className="blockquote-footer mt-3">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                            <p>Revenus</p>
+                            <footer className="mt-3">500€</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -27,8 +27,8 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                 <div className="card">
                     <div className="card-body">
                         <blockquote className="blockquote mb-0">
-                            <p>A well-known quote, contained in a blockquote element.</p>
-                            <footer className="blockquote-footer mt-3">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                            <p>Économies</p>
+                            <footer className="mt-3">700€</footer>
                         </blockquote>
                     </div>
                 </div>
