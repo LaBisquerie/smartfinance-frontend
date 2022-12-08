@@ -1,33 +1,27 @@
 import 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 import type { ChartProps } from 'react-chartjs-2';
-import { Revenu } from '../pages/Revenu';
+import { Revenu } from '../pages/Revenus';
 
 interface Props {
     revenus: Revenu[];
 }
 
   const options: Omit<ChartProps<"bar", unknown, unknown>, "type">["options"] = {
-
     responsive: true,
-    scales: {
-        yAxes: {
-            type: "logarithmic",
-        }
-    },
     plugins: {
         legend: {
             display: false,
         },
     },
   };
-  
-const BarChart: React.FC<Props> = ({revenus}) => {
+
+const RevenusBarChart: React.FC<Props> = ({revenus}) => {
     const generateChartData = () => {
         const data: number[] = [];
         const labels: string[] = [];
-    
-        revenus.forEach((revenu: { montant: number; date: string; }) => {
+
+        revenus.forEach((revenu) => {
             data.push(revenu.montant);
             labels.push(revenu.date);
         });
@@ -63,4 +57,4 @@ const BarChart: React.FC<Props> = ({revenus}) => {
     return <Bar data={generateChartData()} options={options} />;
 };
 
-export default BarChart;
+export default RevenusBarChart;

@@ -238,3 +238,22 @@
 .revenu-delete-modal__btn {
     padding: .75rem;
 }
+
+.revenu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.revenu-list__filters {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 1rem;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+    }
+}
