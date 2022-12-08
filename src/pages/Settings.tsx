@@ -56,7 +56,6 @@ const SettingsPage: React.FunctionComponent<ISettingsPageProps> = () => {
         });
 
         const data = await response.json();
-        console.log({ data });
         if (response.status === 200 || response.status === 201) {
             toast.success('Votre dépense à été modifiée avec succès !');
             getUserData();

@@ -59,7 +59,6 @@ export const AuthProvider = ({ children } : PropsWithChildren<unknown>) => {
     });
 
     const data = await response.json();
-    console.log({data});
     if (response.status === 200) {
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
@@ -109,7 +108,6 @@ export const AuthProvider = ({ children } : PropsWithChildren<unknown>) => {
     logoutUser
   };
 
-  console.log(contextData);
 
   useEffect(() => {
     if (authTokens) {
