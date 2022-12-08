@@ -73,6 +73,12 @@
     }
 }
 
+.revenu-graph {
+    max-width: 100%;
+    max-height: 80%;
+    height: 80%;
+}
+
 .revenu-form__title {
     margin-bottom: 1.5rem;
     @include font-size(24px);
