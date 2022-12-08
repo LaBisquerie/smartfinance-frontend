@@ -78,7 +78,7 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         .then(response => response.json())
         .then(res => setDepenses(res))
         .catch(err => console.log(err))
-        fetch('http://localhost:8000/api/categories/')
+        fetch('http://localhost:8000/api/categories/?type=OUTCOME')
         .then(response => response.json())
         .then(res => setCategories(res))
         .catch(err => console.log(err))
