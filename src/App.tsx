@@ -31,9 +31,9 @@ function App() {
                             } />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
-                            <Route path='/revenu' element={<RevenuPage />} />
-                            <Route path='/depenses' element={<DepensePage />} />
-                            <Route path='/settings' element={<SettingsPage />} />
+                            <Route path='/revenus' element={<PrivateRoute><RevenuPage /></PrivateRoute>} />
+                            <Route path='/depenses' element={<PrivateRoute><DepensePage /></PrivateRoute>} />
+                            <Route path='/settings' element={<PrivateRoute><SettingsPage /></PrivateRoute>} />
 
                         </Routes>
                     </div>

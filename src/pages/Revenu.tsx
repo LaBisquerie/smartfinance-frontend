@@ -86,7 +86,7 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
             .then((response) => response.json())
             .then((res) => setRevenus(res))
             .catch((err) => console.log(err));
-        fetch('http://localhost:8000/api/categories/')
+        fetch('http://localhost:8000/api/categories/?type=INCOME')
             .then((response) => response.json())
             .then((res) => setCategories(res))
             .catch((err) => console.log(err));
