@@ -23,7 +23,7 @@ const RevenusBarChart: React.FC<Props> = ({revenus}) => {
 
         revenus.forEach((revenu) => {
             data.push(revenu.montant);
-            labels.push(revenu.date);
+            labels.push(new Intl.DateTimeFormat('fr', {dateStyle: 'full'}).format(new Date(revenu.date)));
         });
 
         return {
