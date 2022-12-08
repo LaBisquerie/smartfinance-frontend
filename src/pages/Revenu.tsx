@@ -72,14 +72,14 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
         let value = e.target.value;
         setSelectedCategoryValue(value);
         setSelectedCategoryLabel(label);
-    }  
+    }
 
     useEffect(() => {
         fetch('http://localhost:8000/api/budgets/')
         .then(response => response.json())
         .then(res => setRevenus(res))
         .catch(err => console.log(err))
-        fetch('http://localhost:8000/api/categories/')
+        fetch('http://localhost:8000/api/categories/?type=INCOME')
         .then(response => response.json())
         .then(res => setCategories(res))
         .catch(err => console.log(err))
