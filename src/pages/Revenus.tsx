@@ -10,7 +10,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RevenusBarChart from '../components/RevenusBarChart';
 
-export interface RevenuPageProps {}
+
+
+export interface RevenuPageProps { }
+
 
 export type Revenu = {
     id: number;
@@ -23,7 +26,30 @@ export type Revenu = {
     utilisateur: string;
 };
 
+
+const monthRequest: Record<string, { date_after: string; date_before: string }> = {
+    janvier: { date_after: "2022-01-01", date_before: "2022-01-31" },
+    fevrier: { date_after: "2022-02-01", date_before: "2022-02-28" },
+    mars: { date_after: "2022-03-01", date_before: "2022-03-31" },
+    avril: { date_after: "2022-04-01", date_before: "2022-04-30" },
+    mai: { date_after: "2022-05-01", date_before: "2022-05-31" },
+    juin: { date_after: "2022-06-01", date_before: "2022-06-30" },
+    juillet: { date_after: "2022-07-01", date_before: "2022-07-31" },
+    aout: { date_after: "2022-08-01", date_before: "2022-08-31" },
+    septembre: { date_after: "2022-09-01", date_before: "2022-09-30" },
+    octobre: { date_after: "2022-10-01", date_before: "2022-10-31" },
+    novembre: { date_after: "2022-11-01", date_before: "2022-11-30" },
+    decembre: { date_after: "2022-12-01", date_before: "2022-12-31" },
+    allMonth: { date_after: "2022-01-01", date_before: "2022-12-31" }
+};
+
+type Category = {
+    nom: string;
+    id: number;
+}
+
 const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
+
     const [selectedRevenu, setSelectedRevenu] = useState<Revenu | undefined>();
     const [revenuForm, setRevenuForm] = useState(false);
     const [deleteRevenuForm, setDeleteRevenuForm] = useState(false);
@@ -32,30 +58,19 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
     const { user } = useAuth();
     const [descBudget, setDescBudget] = useState('');
     const [amount, setAmount] = useState(0);
-    const [categories, setCategories] = useState<any[] | undefined>();
-    const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('');
-    const [selectedCategoryValue, setSelectedCategoryValue] = useState(0);
+    const [categories, setCategories] = useState<Category[] | undefined>();
+    const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const today = format(new Date(), 'yyyy-MM-dd');
-    let [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [selectedMonthValue, setSelectedMonthValue] = useState(0);
-    const [selectedMonthLabel, setSelectedMonthLabel] = useState('');
-
-    const montRequest = {
-        janvier: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-01-01&date_before=2022-01-31',
-        fevrier: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-02-01&date_before=2022-11-28',
-        mars: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-03-01&date_before=2022-03-31',
-        avril: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-04-01&date_before=2022-05-30',
-        mai: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-05-01&date_before=2022-05-31',
-        juin: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-06-01&date_before=2022-07-30',
-        juillet: 'http://localhost:8000/api/budgets/?categorie=&categorie__type=&date_after=2022-07-01&date_before=2022-08-31'
-    };
-
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedMonthValue, setSelectedMonthValue] = useState("allMonth");
+    const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+    // const [selectedOption, setSelectedOption] = useState<String>();
     const toggleForm = () => {
         if (!revenuForm) {
             setDescBudget('');
             setAmount(0);
             setSelectedDate(new Date());
-            setSelectedCategoryValue(0);
+            setSelectedCategoryValue("");
         }
         setRevenuForm(!revenuForm);
     };
@@ -77,29 +92,20 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         setDeleteRevenuForm(!deleteRevenuForm);
     };
 
-    const handleChange = (e: any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         let value = e.target.value;
         setSelectedCategoryValue(value);
-        setSelectedCategoryLabel(label);
     };
 
-    const handleMonthChange = (e: any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
-        let value = e.target.value;
-        setSelectedMonthValue(value);
-        setSelectedMonthLabel(label);
-    };
 
-    const handleCategoryChange = (e: any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
-        let value = e.target.value;
-        setSelectedCategoryValue(value);
-        setSelectedCategoryLabel(label);
-    };
+    // !!!
+    useEffect(() => {
+        const currentMonth = monthRequest[selectedMonthValue]!;
+        fetch(`http://localhost:8000/api/budgets/?categorie=${selectedFilterCategory}&categorie__type=INCOME&date_after=${currentMonth.date_after}&date_before=${currentMonth.date_before}`)
+            .then((response) => response.json())
+            .then((res) => setRevenus(res))
+            .catch((err) => console.log(err));
+    }, [selectedFilterCategory, selectedMonthValue])
 
     const handleCategorySubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -112,7 +118,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             .catch((err) => console.log(err));
         fetch('http://localhost:8000/api/categories/?type=INCOME')
             .then((response) => response.json())
-            .then((res) => setCategories(res))
+            .then((res) => setCategories(res as Category[]))
             .catch((err) => console.log(err));
     }, []);
 
@@ -123,7 +129,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                categorie_name,
+                categorie_name: categories?.find(category => category.id === categorie)?.nom ?? "",
                 short_description,
                 montant,
                 type: 'INCOME',
@@ -151,7 +157,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                categorie_name,
+                categorie_name: categories?.find(category => category.id === categorie)?.nom ?? "",
                 short_description,
                 montant,
                 type: 'INCOME',
@@ -192,14 +198,14 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
 
     const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createRevenu(selectedCategoryLabel, descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), selectedCategoryValue);
+        createRevenu('', descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), parseInt(selectedCategoryValue));
         setRevenuForm(!revenuForm);
     };
 
     const handleUpdateSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (selectedRevenu) {
-            updateRevenu(selectedCategoryLabel, descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), selectedCategoryValue, selectedRevenu.id);
+            updateRevenu('', descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), parseInt(selectedCategoryValue), selectedRevenu.id);
         }
         setUpdateRevenuForm(!updateRevenuForm);
     };
@@ -257,7 +263,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                                             onChange={handleChange}
                                             value={selectedCategoryValue}
                                         >
-                                            <option value="null">--Choisir une catégorie--</option>
+                                            <option value="">--Choisir une catégorie--</option>
                                             {categories?.map((categorie: any) => {
                                                 return (
                                                     <option key={categorie.id} value={categorie.id}>
@@ -281,26 +287,20 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                 <div className="revenu-list">
                     <div className="revenu-list__filters">
                         <form onSubmit={handleSubmit}>
-                            <select
-                                className="depense-form-item__input depense-form-item__input--select"
-                                name="selectedMonth"
-                                id="selectedMonth"
-                                onChange={handleMonthChange}
-                                value={selectedMonthValue}
-                            >
-                                <option value="null">--Choisir un mois--</option>
+                            <select onChange={(e) => setSelectedMonthValue(e.target.value)} value={selectedMonthValue} className="depense-form-item__input depense-form-item__input--select">
+                                <option value="allMonth">Tous les mois</option>
                                 <option value="janvier">Janvier</option>
-                                <option value="2">Février</option>
-                                <option value="3">Mars</option>
-                                <option value="4">Avril</option>
-                                <option value="5">Mai</option>
-                                <option value="6">Juin</option>
-                                <option value="7">Juillet</option>
-                                <option value="8">Août</option>
-                                <option value="9">Septembre</option>
-                                <option value="10">Octobre</option>
-                                <option value="11">Novembre</option>
-                                <option value="12">Décembre</option>
+                                <option value="fevrier">Février</option>
+                                <option value="mars">Mars</option>
+                                <option value="avril">Avril</option>
+                                <option value="mai">Mai</option>
+                                <option value="juin">Juin</option>
+                                <option value="juillet">Juillet</option>
+                                <option value="aout">Août</option>
+                                <option value="septembre">Septembre</option>
+                                <option value="octobre">Octobre</option>
+                                <option value="novembre">Novembre</option>
+                                <option value="decembre">Décembre</option>
                             </select>
                         </form>
                         <form onSubmit={handleCategorySubmit}>
@@ -308,14 +308,14 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                                 className="depense-form-item__input depense-form-item__input--select"
                                 name="selectedCategory"
                                 id="selectedCategory"
-                                onChange={handleCategoryChange}
-                                value={selectedCategoryValue}
+                                onChange={(e) => setSelectedFilterCategory(e.target.value)}
+                                value={selectedFilterCategory}
                             >
-                                <option value="null">--Choisir une catégorie--</option>
-                                {categories?.map((categorie: any) => {
+                                <option value="">--Choisir une catégorie--</option>
+                                {categories?.map((category) => {
                                     return (
-                                        <option key={categorie.id} value={categorie.id}>
-                                            {categorie.nom}
+                                        <option key={category.id} value={String(category.id)}>
+                                            {category.nom}
                                         </option>
                                     );
                                 })}
@@ -393,7 +393,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                                                 onChange={handleChange}
                                                 value={selectedCategoryValue}
                                             >
-                                                <option value="null">--Choisir une catégorie--</option>
+                                                <option value="">--Choisir une catégorie--</option>
                                                 {categories?.map((categorie: any) => {
                                                     return (
                                                         <option key={categorie.id} value={categorie.id}>
