@@ -8,7 +8,7 @@ import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import DepenseChart from '../components/DepenseChart';
+import DepensesBarChart from '../components/DepensesBarChart';
 
 export interface DepensePageProps {}
 
@@ -23,7 +23,7 @@ export type Depense = {
     "utilisateur": string
 }
 
-const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
+const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
     const [selectedDepense, setSelectedDepense] = useState<Depense|undefined>();
     const [depenseForm, setDepenseForm] = useState(false);
     const [deleteDepenseForm, setDeleteDepenseForm] = useState(false);
@@ -71,10 +71,10 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
         let value = e.target.value;
         setSelectedCategoryValue(value);
         setSelectedCategoryLabel(label);
-    }    
+    }
 
     useEffect(() => {
-        fetch('http://localhost:8000/api/budgets/')
+        fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=OUTCOME')
         .then(response => response.json())
         .then(res => setDepenses(res))
         .catch(err => console.log(err))
@@ -194,7 +194,9 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
                         <TiPlus className='depense-header__btn-icon' />
                     </button>
                 </div>
-                <DepenseChart />
+                <div className="depense-chart">
+                    <DepensesBarChart depenses={depenses ?? []} />
+                </div>
                 {depenseForm && (
                     <div className="depense">
                         <div className="overlay">
@@ -331,4 +333,4 @@ const DepensePage: React.FunctionComponent<DepensePageProps> = () => {
     );
 };
 
-export default DepensePage;
+export default DepensesPage;

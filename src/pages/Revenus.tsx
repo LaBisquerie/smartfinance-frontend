@@ -8,7 +8,7 @@ import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import BarChart from '../components/BarChart';
+import RevenusBarChart from '../components/RevenusBarChart';
 
 
 export interface RevenuPageProps {}
@@ -24,7 +24,7 @@ export type Revenu = {
     "utilisateur": string
 };
 
-const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
+const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
     const [selectedRevenu, setSelectedRevenu] = useState<Revenu|undefined>();
     const [revenuForm, setRevenuForm] = useState(false);
     const [deleteRevenuForm, setDeleteRevenuForm] = useState(false);
@@ -38,6 +38,8 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
     const [selectedCategoryValue, setSelectedCategoryValue] = useState(0);
     const today = format(new Date(), 'yyyy-MM-dd');
     let [selectedDate, setSelectedDate] = useState<Date|null>(null);
+    const [selectedMonthValue, setSelectedMonthValue] = useState(0);
+    const [selectedMonthLabel, setSelectedMonthLabel] = useState('');
 
     const toggleForm = () => {
         if (!revenuForm) {
@@ -74,8 +76,28 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
         setSelectedCategoryLabel(label);
     }
 
+    const handleMonthChange = (e : any) => {
+        let index = e.nativeEvent.target.selectedIndex;
+        let label = e.nativeEvent.target[index].text;
+        let value = e.target.value;
+        setSelectedMonthValue(value);
+        setSelectedMonthLabel(label);
+    }
+
+    const handleCategoryChange = (e : any) => {
+        let index = e.nativeEvent.target.selectedIndex;
+        let label = e.nativeEvent.target[index].text;
+        let value = e.target.value;
+        setSelectedCategoryValue(value);
+        setSelectedCategoryLabel(label);
+    }
+
+    const handleCategorySubmit = (e : SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    }
+
     useEffect(() => {
-        fetch('http://localhost:8000/api/budgets/')
+        fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME')
         .then(response => response.json())
         .then(res => setRevenus(res))
         .catch(err => console.log(err))
@@ -140,7 +162,6 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                 .catch(err => console.log(err))
         } else {
             console.log('Something went wrong');
-            
         }
     }
 
@@ -222,7 +243,7 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                                         <label className="revenu-form-item__label">Catégorie</label>
                                         <select className='revenu-form-item__input revenu-form-item__input--select' name="selectedCategory" id="selectedCategory" onChange={handleChange} value={selectedCategoryValue}>
                                             <option value="null">--Choisir une catégorie--</option>
-                                            {categories?.map((categorie : any) => { 
+                                            {categories?.map((categorie : any) => {
                                                 return (
                                                     <option key={categorie.id} value={categorie.id}>{categorie.nom}</option>
                                                 )
@@ -236,9 +257,38 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                     </div>
                 )}
                 <div className="revenu-graph">
-                    <BarChart revenus={revenus ?? []} />
+                    <RevenusBarChart revenus={revenus ?? []} />
                 </div>
                 <div className="revenu-list">
+                    <div className="revenu-list__filters">
+                        <form onSubmit={handleSubmit}>
+                            <select className="depense-form-item__input depense-form-item__input--select" name="selectedMonth" id="selectedMonth" onChange={handleMonthChange} value={selectedMonthValue}>
+                                <option value="null">--Choisir un mois--</option>
+                                <option value="1">Janvier</option>
+                                <option value="2">Février</option>
+                                <option value="3">Mars</option>
+                                <option value="4">Avril</option>
+                                <option value="5">Mai</option>
+                                <option value="6">Juin</option>
+                                <option value="7">Juillet</option>
+                                <option value="8">Août</option>
+                                <option value="9">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                            </select>
+                        </form>
+                        <form onSubmit={handleCategorySubmit}>
+                        <select className='depense-form-item__input depense-form-item__input--select' name="selectedCategory" id="selectedCategory" onChange={handleCategoryChange} value={selectedCategoryValue}>
+                            <option value="null">--Choisir une catégorie--</option>
+                            {categories?.map((categorie : any) => { 
+                                return (
+                                    <option key={categorie.id} value={categorie.id}>{categorie.nom}</option>
+                                )
+                            })}
+                        </select>
+                        </form>
+                    </div>
                     <div className="table-responsive-sm">
                         <table className="revenu-table">
                             <thead>
@@ -249,7 +299,7 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
                                     <th className='revenu-table__header'>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>    
+                            <tbody>
                                 {revenus?.map((revenu) => {
                                     if (user?.user_id === revenu.utilisateur && revenu.type === 'INCOME') {
                                         return (
@@ -339,6 +389,6 @@ const RevenuPage: React.FunctionComponent<RevenuPageProps> = () => {
     );
 };
 
-export default RevenuPage;
+export default RevenusPage;
 
 
