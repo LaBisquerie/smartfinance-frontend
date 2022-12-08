@@ -128,7 +128,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         console.log({data});
         if(response.status === 200 || response.status === 201) {
             toast.success('votre revenu à été créée avec succès !');
-            fetch('http://localhost:8000/api/budgets/')
+            fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME')
                 .then(response => response.json())
                 .then(res => setRevenus(res))
                 .catch(err => console.log(err))
@@ -156,7 +156,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         console.log({data});
         if (response.status === 200 || response.status === 201) {
             toast.success('Votre revenu à été modifiée avec succès !');
-            fetch('http://localhost:8000/api/budgets/')
+            fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME')
                 .then(response => response.json())
                 .then(res => setRevenus(res))
                 .catch(err => console.log(err))
@@ -172,7 +172,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
 
         if(response.status === 200 || response.status === 204) {
             toast.success('Votre revenu à bien été supprimée avec succès !');
-            fetch('http://localhost:8000/api/budgets/')
+            fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME')
                 .then(response => response.json())
                 .then(res => setRevenus(res))
                 .catch(err => console.log(err))

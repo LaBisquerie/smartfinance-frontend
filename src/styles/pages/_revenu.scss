@@ -239,7 +239,8 @@
     padding: .75rem;
 }
 
-.revenu-list {
+.revenu-list,
+.depense-list {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -247,7 +248,8 @@
     margin-bottom: 2rem;
 }
 
-.revenu-list__filters {
+.revenu-list__filters,
+.depense-list__filters {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
