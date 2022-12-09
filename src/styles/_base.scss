@@ -16,7 +16,6 @@ body {
 .app-container {
   display: flex;
   min-height: 100vh;
-  padding-left: 4.375rem;
 
   @include media-breakpoint-up(md) {
     padding-left: 0;
