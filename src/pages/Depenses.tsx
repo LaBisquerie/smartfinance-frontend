@@ -47,7 +47,7 @@ type Category = {
 const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
     const [selectedDepense, setSelectedDepense] = useState<Depense|undefined>();
     const [depenseForm, setDepenseForm] = useState(false);
-        const [categoryForm, setCategoryForm] = useState(false);
+    const [categoryForm, setCategoryForm] = useState(false);
     const [deleteDepenseForm, setDeleteDepenseForm] = useState(false);
     const [updateDepenseForm, setUpdateDepenseForm] = useState(false);
     const [depenses, setDepenses] = useState<Depense[]|undefined>();
@@ -55,7 +55,6 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
     const [descBudget, setDescBudget] = useState('');
     const [amount, setAmount] = useState(0);
     const [categories, setCategories] = useState<Category[]|undefined>();
-    const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('');
     const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const today = format(new Date(), 'yyyy-MM-dd');
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -123,7 +122,7 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
             .catch(err => console.log(err))
         fetch('http://localhost:8000/api/categories/?type=OUTCOME')
             .then(response => response.json())
-            .then(res => setCategories(res))
+            .then(res => setCategories(res as Category[]))
             .catch(err => console.log(err))
     }, [])
 
@@ -347,20 +346,23 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                 <div className="depense-list">
                     <div className="revenu-list__filters">
                         <form onSubmit={handleSubmit}>
-                            <select className="depense-form-item__input depense-form-item__input--select" onChange={(e) => setSelectedMonthValue(e.target.value)} value={selectedMonthValue}>
+                            <select
+                            className="depense-form-item__input depense-form-item__input--select"
+                            onChange={(e) => setSelectedMonthValue(e.target.value)}
+                            value={selectedMonthValue}>
                                 <option value="allMonth">Tous les mois</option>
-                                <option value="1">Janvier</option>
-                                <option value="2">Février</option>
-                                <option value="3">Mars</option>
-                                <option value="4">Avril</option>
-                                <option value="5">Mai</option>
-                                <option value="6">Juin</option>
-                                <option value="7">Juillet</option>
-                                <option value="8">Août</option>
-                                <option value="9">Septembre</option>
-                                <option value="10">Octobre</option>
-                                <option value="11">Novembre</option>
-                                <option value="12">Décembre</option>
+                                <option value="janvier">Janvier</option>
+                                <option value="fevrier">Février</option>
+                                <option value="mars">Mars</option>
+                                <option value="avril">Avril</option>
+                                <option value="mai">Mai</option>
+                                <option value="juin">Juin</option>
+                                <option value="juillet">Juillet</option>
+                                <option value="aout">Août</option>
+                                <option value="septembre">Septembre</option>
+                                <option value="octobre">Octobre</option>
+                                <option value="novembre">Novembre</option>
+                                <option value="decembre">Décembre</option>
                             </select>
                         </form>
                         <form onSubmit={handleCategorySubmit}>
@@ -370,7 +372,7 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                                 id="selectedCategory"
                                 onChange={(e) => setSelectedFilterCategory(e.target.value)} value={selectedFilterCategory}>
                             <option value="">--Choisir une catégorie--</option>
-                            {categories?.map((categorie : any) => {
+                            {categories?.map((categorie) => {
                                 return (
                                     <option key={categorie.id} value={String(categorie.id)}>{categorie.nom}</option>
                                 )
