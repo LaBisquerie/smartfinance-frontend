@@ -1,0 +1,45 @@
+.cards-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cards-container .card {
+    width: 30%;
+
+    .card-body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+            font-size: 16px;
+        }
+
+        footer {
+            font-size: 24px;
+            color: #3558A8;
+            font-weight: 600;
+        }
+    }
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .cards-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .card {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+    }
+}
+
+.global-chart {
+    padding: 25px;
+    width: 25%;
+    // height: 80%;
+}  
