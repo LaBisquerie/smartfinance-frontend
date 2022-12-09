@@ -65,7 +65,6 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
 
     return (
         <div className="home-main-container">
-            <>{console.log('depenses: ', depenses)}</>
             <div className="cards-container text-center">
                 <div className="card">
                     <div className="card-body">
@@ -97,6 +96,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
             <div className="global-chart">
                 <GlobalDonutChart depenses={depenses ?? []} />
             </div>
+            <h2 className='top-page__name mt-2 mb-3'>Vos dernières dépenses</h2>
             <div className="table-responsive-sm">
                 <table className="revenu-table">
                     <thead>
