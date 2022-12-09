@@ -10,10 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RevenusBarChart from '../components/RevenusBarChart';
 
-
-
 export interface RevenuPageProps { }
-
 
 export type Revenu = {
     id: number;
@@ -25,7 +22,6 @@ export type Revenu = {
     categorie: number;
     utilisateur: string;
 };
-
 
 const monthRequest: Record<string, { date_after: string; date_before: string }> = {
     janvier: { date_after: "2022-01-01", date_before: "2022-01-31" },
