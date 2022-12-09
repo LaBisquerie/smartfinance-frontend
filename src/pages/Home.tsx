@@ -6,17 +6,9 @@ export interface IHomePageProps { }
 const HomePage: React.FunctionComponent<IHomePageProps> = () => {
 
     const { user } = useAuth();
-    const [userScore, setUserScore] = useState(0);
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
-
-
-    const getUserScore = () => {
-        fetch(`http://localhost:8000/api/users/${user?.user_id}/`)
-            .then((response) => response.json())
-            .then((res) => setUserScore(res.total_amount))
-            .catch((err) => console.log(err));
-    };
+    const [totalAmount, setTotalAmount] = useState(0)
 
     const calculRevenus = (revenus:any) => {
         let totalRevenus = 0;
@@ -34,6 +26,13 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
         setTotalExpense(totalDepenses);
     }
 
+    const calculTotalAmount = (revenus:any, depenses: any) => {
+        let totalAmount = 0;
+
+        totalAmount = revenus - depenses
+        setTotalAmount(totalAmount);
+    }
+
     const getRevenus = () => {
         fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME&date_after=&date_before=')
         .then((response) => response.json())
@@ -49,10 +48,13 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
     }
 
     useEffect(() => {
-        getUserScore();
         getRevenus();
         getDepenses();
     }, []);
+
+    useEffect(() => {
+        calculTotalAmount(totalIncome, totalExpense);
+    }, [totalExpense, totalIncome])
 
 
     return (
@@ -62,7 +64,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                     <div className="card-body">
                         <blockquote className="blockquote mb-0 ">
                             <p>Solde</p>
-                            <footer className="mt-3">{userScore || 0 }€</footer>
+                            <footer className="mt-3">{totalAmount}€</footer>
                         </blockquote>
                     </div>
                 </div>
