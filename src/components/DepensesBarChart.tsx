@@ -23,7 +23,7 @@ const DepensesBarChart: React.FC<Props> = ({depenses}) => {
 
         depenses.forEach((depense) => {
             data.push(depense.montant);
-            labels.push(depense.date);
+            labels.push(new Intl.DateTimeFormat('fr', {dateStyle: 'full'}).format(new Date(depense.date)));
         });
 
         return {
