@@ -8,7 +8,6 @@ import { Revenu } from './Revenus';
 export interface IHomePageProps {}
 
 const HomePage: React.FunctionComponent<IHomePageProps> = () => {
-    const [revenus, setRevenus] = useState<Revenu[] | undefined>();
     const [depenses, setDepenses] = useState<Depense[] | undefined>();
     const { user } = useAuth();
     const [totalIncome, setTotalIncome] = useState(0);
@@ -66,6 +65,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
 
     return (
         <div className="home-main-container">
+            <>{console.log(depenses)}</>
             <div className="cards-container text-center">
                 <div className="card">
                     <div className="card-body">
