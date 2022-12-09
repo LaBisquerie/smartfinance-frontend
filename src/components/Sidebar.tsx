@@ -59,7 +59,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = () => {
                                 <span className="sidebar-list__link--label">Revenus</span>
                             </NavLink>
                         </li>
-                        <li className="sidebar-list__item">
+                        {/* <li className="sidebar-list__item">
                             <NavLink
                                 to="/statistiques"
                                 style={({ isActive }) => {
@@ -70,7 +70,7 @@ const Sidebar: React.FunctionComponent<SidebarProps> = () => {
                                 <FiPieChart />
                                 <span className="sidebar-list__link--label">Statistiques</span>
                             </NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className="sidebar-footer">
