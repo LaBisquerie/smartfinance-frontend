@@ -23,32 +23,64 @@ export type Depense = {
     "utilisateur": string
 }
 
+const monthRequest: Record<string, { date_after: string; date_before: string }> = {
+    janvier: { date_after: "2022-01-01", date_before: "2022-01-31" },
+    fevrier: { date_after: "2022-02-01", date_before: "2022-02-28" },
+    mars: { date_after: "2022-03-01", date_before: "2022-03-31" },
+    avril: { date_after: "2022-04-01", date_before: "2022-04-30" },
+    mai: { date_after: "2022-05-01", date_before: "2022-05-31" },
+    juin: { date_after: "2022-06-01", date_before: "2022-06-30" },
+    juillet: { date_after: "2022-07-01", date_before: "2022-07-31" },
+    aout: { date_after: "2022-08-01", date_before: "2022-08-31" },
+    septembre: { date_after: "2022-09-01", date_before: "2022-09-30" },
+    octobre: { date_after: "2022-10-01", date_before: "2022-10-31" },
+    novembre: { date_after: "2022-11-01", date_before: "2022-11-30" },
+    decembre: { date_after: "2022-12-01", date_before: "2022-12-31" },
+    allMonth: { date_after: "2022-01-01", date_before: "2022-12-31" }
+};
+
+type Category = {
+    nom: string;
+    id: number;
+}
+
 const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
     const [selectedDepense, setSelectedDepense] = useState<Depense|undefined>();
     const [depenseForm, setDepenseForm] = useState(false);
+        const [categoryForm, setCategoryForm] = useState(false);
     const [deleteDepenseForm, setDeleteDepenseForm] = useState(false);
     const [updateDepenseForm, setUpdateDepenseForm] = useState(false);
     const [depenses, setDepenses] = useState<Depense[]|undefined>();
     const { user } = useAuth();
     const [descBudget, setDescBudget] = useState('');
     const [amount, setAmount] = useState(0);
-    const [categories, setCategories] = useState<any[]|undefined>();
+    const [categories, setCategories] = useState<Category[]|undefined>();
     const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('');
-    const [selectedCategoryValue, setSelectedCategoryValue] = useState(0);
+    const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const today = format(new Date(), 'yyyy-MM-dd');
-    let [selectedDate, setSelectedDate] = useState<Date|null>(null);
-    const [selectedMonthValue, setSelectedMonthValue] = useState(0);
-    const [selectedMonthLabel, setSelectedMonthLabel] = useState('');
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedMonthValue, setSelectedMonthValue] = useState("allMonth");
+    const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+    const [categoryName, setCategoryName] = useState('');
+    const [categoryDesc, setCategoryDesc] = useState('');
 
     const toggleForm = () => {
         if (!depenseForm) {
             setDescBudget('');
             setAmount(0);
             setSelectedDate(new Date());
-            setSelectedCategoryValue(0);
+            setSelectedCategoryValue("");
         }
         setDepenseForm(!depenseForm);
     };
+
+    const toggleCategoryForm = () => {
+        if (!categoryForm) {
+            setCategoryName('');
+            setCategoryDesc('');
+        }
+        setCategoryForm(!categoryForm);
+    }
 
     const toggleUpdateForm = (depense? : Depense) => {
         if (depense !== undefined && !updateDepenseForm) {
@@ -67,44 +99,65 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
         setDeleteDepenseForm(!deleteDepenseForm)
     }
 
-    const handleChange = (e : any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
+    const handleChange = (e : React.ChangeEvent<HTMLSelectElement>) => {
         let value = e.target.value;
         setSelectedCategoryValue(value);
-        setSelectedCategoryLabel(label);
-    }
-
-    const handleMonthChange = (e : any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
-        let value = e.target.value;
-        setSelectedMonthValue(value);
-        setSelectedMonthLabel(label);
-    }
-
-    const handleCategoryChange = (e : any) => {
-        let index = e.nativeEvent.target.selectedIndex;
-        let label = e.nativeEvent.target[index].text;
-        let value = e.target.value;
-        setSelectedCategoryValue(value);
-        setSelectedCategoryLabel(label);
-    }
-
-    const handleCategorySubmit = (e : SyntheticEvent<HTMLFormElement>) => {
-        e.preventDefault();
     }
 
     useEffect(() => {
+        const currentMonth = monthRequest[selectedMonthValue]!;
+        fetch(`http://localhost:8000/api/budgets/?categorie=${selectedFilterCategory}&categorie__type=OUTCOME&date_after=${currentMonth.date_after}&date_before=${currentMonth.date_before}`)
+            .then((response) => response.json())
+            .then((res) => setDepenses(res))
+            .catch((err) => console.log(err));
+    }, [selectedFilterCategory, selectedMonthValue])
+
+    const handleCategorySubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+
+    useEffect(() => {
         fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=OUTCOME')
-        .then(response => response.json())
-        .then(res => setDepenses(res))
-        .catch(err => console.log(err))
+            .then(response => response.json())
+            .then(res => setDepenses(res))
+            .catch(err => console.log(err))
         fetch('http://localhost:8000/api/categories/?type=OUTCOME')
-        .then(response => response.json())
-        .then(res => setCategories(res))
-        .catch(err => console.log(err))
+            .then(response => response.json())
+            .then(res => setCategories(res))
+            .catch(err => console.log(err))
     }, [])
+
+    const createRevenuCategory = async (nom : string, description: string) => {
+        const response = await fetch('http://localhost:8000/api/categories/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nom,
+                description,
+                type: 'OUTCOME',
+                parent_categorie: null,
+                budgets: []
+            })
+        });
+
+        const data = await response.json();
+        console.log({ data });
+        if (response.status === 200 || response.status === 201) {
+            toast.success('votre catégorie à été créée avec succès !');
+            fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=OUTCOME')
+                .then((response) => response.json())
+                .then((res) => setDepenses(res))
+                .catch((err) => console.log(err));
+            fetch('http://localhost:8000/api/categories/?type=OUTCOME')
+                .then((response) => response.json())
+                .then((res) => setCategories(res as Category[]))
+                .catch((err) => console.log(err));
+        } else {
+            console.log('Something went wrong !');
+        }
+    }
 
     const createDepense = async (categorie_name : string, short_description : string, montant : number, date : string, categorie : number) => {
         const response = await fetch("http://localhost:8000/api/budgets/", {
@@ -113,7 +166,7 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                categorie_name,
+                categorie_name : categories?.find(category => category.id === categorie)?.nom ?? "",
                 short_description,
                 montant,
                 type: 'OUTCOME',
@@ -141,7 +194,7 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                categorie_name,
+                categorie_name: categories?.find(category => category.id === categorie)?.nom ?? "",
                 short_description,
                 montant,
                 type: 'OUTCOME',
@@ -161,7 +214,6 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                 .catch(err => console.log(err))
         } else {
             console.log('Something went wrong');
-            
         }
     }
 
@@ -183,14 +235,20 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
 
     const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createDepense(selectedCategoryLabel, descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), selectedCategoryValue);
+        createDepense('', descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), parseInt(selectedCategoryValue));
         setDepenseForm(!depenseForm);
+    }
+
+    const handleAddCategorySubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        createRevenuCategory(categoryName, categoryDesc);
+        setCategoryForm(!categoryForm);
     }
 
     const handleUpdateSubmit = (e:SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (selectedDepense) {
-            updateDepense(selectedCategoryLabel, descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), selectedCategoryValue, selectedDepense.id);
+            updateDepense('', descBudget, amount, format(selectedDate!, 'yyyy-MM-dd'), parseInt(selectedCategoryValue), selectedDepense.id);
         }
         setUpdateDepenseForm(!updateDepenseForm);
     }
@@ -209,15 +267,12 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                 <ToastContainer />
                 <div className="depense-header">
                     <h1 className='depense-header__title'>Vos dépenses</h1>
-                    <button onClick={toggleForm} className="btn btn-primary depense-header__btn d-none d-lg-block">
+                    <button onClick={toggleForm} className="btn btn-primary depense-header__btn depense-header__btn--first">
                         Ajouter vos dépenses
                     </button>
-                    <button onClick={toggleForm} className="btn btn-primary depense-header__btn depense-header__btn-sm d-lg-none">
-                        <TiPlus className='depense-header__btn-icon' />
+                    <button onClick={toggleCategoryForm} className="btn btn-primary revenu-header__btn">
+                        Ajouter une catégorie
                     </button>
-                </div>
-                <div className="depense-chart">
-                    <DepensesBarChart depenses={depenses ?? []} />
                 </div>
                 {depenseForm && (
                     <div className="depense">
@@ -259,11 +314,41 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                         </div>
                     </div>
                 )}
+                {categoryForm && (
+                    <div className="revenu">
+                        <div className="overlay">
+                            <div className="revenu-content">
+                                <div className="revenu-form__header">
+                                    <h2 className="revenu-form__title">Ajouter une catégorie</h2>
+                                    <button className="revenu-form__btn-close" onClick={toggleCategoryForm}>
+                                        <IoIosClose className="revenu-form__btn-icon" />
+                                    </button>
+                                </div>
+                                <form className="revenu-form" onSubmit={handleAddCategorySubmit}>
+                                    <div className="revenu-form-item">
+                                        <label className="revenu-form-item__label">Nom de la catégorie</label>
+                                        <input type="text" className="revenu-form-item__input" id="categoryName" name="categoryName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
+                                    </div>
+                                    <div className="revenu-form-item">
+                                        <label className="revenu-form__label">Description de la catégorie</label>
+                                        <input type="text" className="revenu-form-item__input" id="categoryDesc" name="categoryDesc" onChange={(e) => setCategoryDesc(e.target.value)} value={categoryDesc} />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary revenu-form__btn">
+                                        Ajouter
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="depense-chart">
+                    <DepensesBarChart depenses={depenses ?? []} />
+                </div>
                 <div className="depense-list">
                     <div className="revenu-list__filters">
                         <form onSubmit={handleSubmit}>
-                            <select className="depense-form-item__input depense-form-item__input--select" name="selectedMonth" id="selectedMonth" onChange={handleMonthChange} value={selectedMonthValue}>
-                                <option value="null">--Choisir un mois--</option>
+                            <select className="depense-form-item__input depense-form-item__input--select" onChange={(e) => setSelectedMonthValue(e.target.value)} value={selectedMonthValue}>
+                                <option value="allMonth">Tous les mois</option>
                                 <option value="1">Janvier</option>
                                 <option value="2">Février</option>
                                 <option value="3">Mars</option>
@@ -279,11 +364,15 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                             </select>
                         </form>
                         <form onSubmit={handleCategorySubmit}>
-                        <select className='depense-form-item__input depense-form-item__input--select' name="selectedCategory" id="selectedCategory" onChange={handleCategoryChange} value={selectedCategoryValue}>
-                            <option value="null">--Choisir une catégorie--</option>
-                            {categories?.map((categorie : any) => { 
+                            <select
+                                className='depense-form-item__input depense-form-item__input--select'
+                                name="selectedCategory"
+                                id="selectedCategory"
+                                onChange={(e) => setSelectedFilterCategory(e.target.value)} value={selectedFilterCategory}>
+                            <option value="">--Choisir une catégorie--</option>
+                            {categories?.map((categorie : any) => {
                                 return (
-                                    <option key={categorie.id} value={categorie.id}>{categorie.nom}</option>
+                                    <option key={categorie.id} value={String(categorie.id)}>{categorie.nom}</option>
                                 )
                             })}
                         </select>
@@ -341,9 +430,14 @@ const DepensesPage: React.FunctionComponent<DepensePageProps> = () => {
                                         </div>
                                         <div className="depense-form-item">
                                             <label className="depense-form-item__label">Catégorie</label>
-                                            <select className='depense-form-item__input depense-form-item__input--select' name="selectedCategory" id="selectedCategory" onChange={handleChange} value={selectedCategoryValue}>
-                                                <option value="null">--Choisir une catégorie--</option>
-                                                {categories?.map((categorie : any) => { 
+                                            <select
+                                                className='depense-form-item__input depense-form-item__input--select'
+                                                name="selectedCategory"
+                                                id="selectedCategory"
+                                                onChange={handleChange}
+                                                value={selectedCategoryValue}>
+                                                <option value="">--Choisir une catégorie--</option>
+                                                {categories?.map((categorie : any) => {
                                                     return (
                                                         <option key={categorie.id} value={categorie.id}>{categorie.nom}</option>
                                                     )
