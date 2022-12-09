@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { IoIosClose } from 'react-icons/io';
-import { TiDelete, TiDeleteOutline, TiPlus } from 'react-icons/ti';
+import { TiDelete, TiDeleteOutline } from 'react-icons/ti';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -52,6 +52,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
 
     const [selectedRevenu, setSelectedRevenu] = useState<Revenu | undefined>();
     const [revenuForm, setRevenuForm] = useState(false);
+    const [categoryForm, setCategoryForm] = useState(false);
     const [deleteRevenuForm, setDeleteRevenuForm] = useState(false);
     const [updateRevenuForm, setUpdateRevenuForm] = useState(false);
     const [revenus, setRevenus] = useState<Revenu[] | undefined>();
@@ -64,6 +65,8 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedMonthValue, setSelectedMonthValue] = useState("allMonth");
     const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
+    const [categoryName, setCategoryName] = useState('');
+    const [categoryDesc, setCategoryDesc] = useState('');
     // const [selectedOption, setSelectedOption] = useState<String>();
     const toggleForm = () => {
         if (!revenuForm) {
@@ -74,6 +77,14 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         }
         setRevenuForm(!revenuForm);
     };
+
+    const toggleCategoryForm = () => {
+        if (!categoryForm) {
+            setCategoryName('');
+            setCategoryDesc('');
+        }
+        setCategoryForm(!categoryForm);
+    }
 
     const toggleUpdateForm = (revenu?: Revenu) => {
         if (revenu !== undefined && !updateRevenuForm) {
@@ -121,6 +132,38 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             .then((res) => setCategories(res as Category[]))
             .catch((err) => console.log(err));
     }, []);
+
+    const createRevenuCategory = async (nom : string, description: string) => {
+        const response = await fetch('http://localhost:8000/api/categories/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nom,
+                description,
+                type: 'INCOME',
+                parent_categorie: null,
+                budgets: []
+            })
+        });
+
+        const data = await response.json();
+        console.log({ data });
+        if (response.status === 200 || response.status === 201) {
+            toast.success('votre catégorie à été créée avec succès !');
+            fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME')
+                .then((response) => response.json())
+                .then((res) => setRevenus(res))
+                .catch((err) => console.log(err));
+            fetch('http://localhost:8000/api/categories/?type=INCOME')
+                .then((response) => response.json())
+                .then((res) => setCategories(res as Category[]))
+                .catch((err) => console.log(err));
+        } else {
+            console.log('Something went wrong !');
+        }
+    }
 
     const createRevenu = async (categorie_name: string, short_description: string, montant: number, date: string, categorie: number) => {
         const response = await fetch('http://localhost:8000/api/budgets/', {
@@ -202,6 +245,12 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         setRevenuForm(!revenuForm);
     };
 
+    const handleAddCategorySubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        createRevenuCategory(categoryName, categoryDesc);
+        setCategoryForm(!categoryForm);
+    }
+
     const handleUpdateSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (selectedRevenu) {
@@ -224,11 +273,11 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                 <ToastContainer />
                 <div className="revenu-header">
                     <h1 className="revenu-header__title">Vos revenus</h1>
-                    <button onClick={toggleForm} className="btn btn-primary revenu-header__btn d-none d-lg-block">
+                    <button onClick={toggleForm} className="btn btn-primary revenu-header__btn revenu-header__btn--first">
                         Ajouter vos revenus
                     </button>
-                    <button onClick={toggleForm} className="btn btn-primary revenu-header__btn revenu-header__btn-sm d-lg-none">
-                        <TiPlus className="revenu-header__btn-icon" />
+                    <button onClick={toggleCategoryForm} className="btn btn-primary revenu-header__btn">
+                        Ajouter une catégorie
                     </button>
                 </div>
                 {revenuForm && (
@@ -272,6 +321,33 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                                                 );
                                             })}
                                         </select>
+                                    </div>
+                                    <button type="submit" className="btn btn-primary revenu-form__btn">
+                                        Ajouter
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {categoryForm && (
+                    <div className="revenu">
+                        <div className="overlay">
+                            <div className="revenu-content">
+                                <div className="revenu-form__header">
+                                    <h2 className="revenu-form__title">Ajouter une catégorie</h2>
+                                    <button className="revenu-form__btn-close" onClick={toggleCategoryForm}>
+                                        <IoIosClose className="revenu-form__btn-icon" />
+                                    </button>
+                                </div>
+                                <form className="revenu-form" onSubmit={handleAddCategorySubmit}>
+                                    <div className="revenu-form-item">
+                                        <label className="revenu-form-item__label">Nom de la catégorie</label>
+                                        <input type="text" className="revenu-form-item__input" id="categoryName" name="categoryName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
+                                    </div>
+                                    <div className="revenu-form-item">
+                                        <label className="revenu-form__label">Description de la catégorie</label>
+                                        <input type="text" className="revenu-form-item__input" id="categoryDesc" name="categoryDesc" onChange={(e) => setCategoryDesc(e.target.value)} value={categoryDesc} />
                                     </div>
                                     <button type="submit" className="btn btn-primary revenu-form__btn">
                                         Ajouter

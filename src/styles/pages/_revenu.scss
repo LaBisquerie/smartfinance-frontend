@@ -20,11 +20,19 @@
     }
 }
 
-.revenu-header {
+.revenu-header,
+.depense-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .75rem;
     margin-bottom: 3rem;
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        align-items: center;
+    }
 }
 
 .revenu-header__title {
@@ -40,6 +48,12 @@
     &:hover {
         background-color: $white;
         color: $primary;
+    }
+
+    &.revenu-header__btn--first {
+        @include media-breakpoint-up(md) {
+            margin-left: auto;
+        }
     }
 }
 
@@ -148,6 +162,7 @@
     border-color: red;
     background-color: $white;
     border-radius: .5rem;
+    width: 100%;
 }
 
 .revenu-table__header {
