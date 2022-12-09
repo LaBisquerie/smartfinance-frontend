@@ -1,15 +1,19 @@
-import React, { Fragment, SyntheticEvent, useEffect, useState } from 'react';
-import { useAuth } from "../context/AuthContext";
+import React, { Fragment, useEffect, useState } from 'react';
+import DepensesBarChart from '../components/DepensesBarChart';
+import GlobalDonutChart from '../components/GlobalDonutsChart';
+import { useAuth } from '../context/AuthContext';
+import { Depense } from './Depenses';
+import { Revenu } from './Revenus';
 
-export interface IHomePageProps { }
+export interface IHomePageProps {}
 
 const HomePage: React.FunctionComponent<IHomePageProps> = () => {
-
+    const [revenus, setRevenus] = useState<Revenu[] | undefined>();
+    const [depenses, setDepenses] = useState<Depense[] | undefined>();
     const { user } = useAuth();
     const [userScore, setUserScore] = useState(0);
     const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpense, setTotalExpense] = useState(0);
-
 
     const getUserScore = () => {
         fetch(`http://localhost:8000/api/users/${user?.user_id}/`)
@@ -18,35 +22,35 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
             .catch((err) => console.log(err));
     };
 
-    const calculRevenus = (revenus:any) => {
+    const calculRevenus = (revenus: any) => {
         let totalRevenus = 0;
-        revenus.forEach((revenu: any)=> {
-            totalRevenus += revenu.montant
-        })
+        revenus.forEach((revenu: any) => {
+            totalRevenus += revenu.montant;
+        });
         setTotalIncome(totalRevenus);
-    }
+    };
 
-    const calculIncome = (depenses:any) => {
+    const calculIncome = (depenses: any) => {
         let totalDepenses = 0;
-        depenses.forEach((depense: any)=> {
-            totalDepenses += depense.montant
-        })
+        depenses.forEach((depense: any) => {
+            totalDepenses += depense.montant;
+        });
         setTotalExpense(totalDepenses);
-    }
+    };
 
     const getRevenus = () => {
         fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=INCOME&date_after=&date_before=')
-        .then((response) => response.json())
-        .then((res) => calculRevenus(res))
-        .catch((err) => console.log(err));
-    }
+            .then((response) => response.json())
+            .then((res) => calculRevenus(res))
+            .catch((err) => console.log(err));
+    };
 
     const getDepenses = () => {
         fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=OUTCOME&date_after=&date_before=')
-        .then((response) => response.json())
-        .then((res) => calculIncome(res))
-        .catch((err) => console.log(err));
-    }
+            .then((response) => response.json())
+            .then((res) => calculIncome(res))
+            .catch((err) => console.log(err));
+    };
 
     useEffect(() => {
         getUserScore();
@@ -54,15 +58,22 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
         getDepenses();
     }, []);
 
+    useEffect(() => {
+        fetch('http://localhost:8000/api/budgets/?categorie=&categorie__type=OUTCOME')
+            .then((response) => response.json())
+            .then((res) => setDepenses(res))
+            .catch((err) => console.log(err));
+    }, []);
+    console.log(depenses);
 
     return (
-        <div className='home-main-container'>
+        <div className="home-main-container">
             <div className="cards-container text-center">
                 <div className="card">
                     <div className="card-body">
                         <blockquote className="blockquote mb-0 ">
                             <p>Solde</p>
-                            <footer className="mt-3">{userScore || 0 }€</footer>
+                            <footer className="mt-3">{userScore || 0}€</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -85,7 +96,36 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                     </div>
                 </div>
             </div>
-
+            <div>
+                <GlobalDonutChart depenses={depenses ?? []} />
+            </div>
+            <div className="table-responsive-sm">
+                <table className="revenu-table">
+                    <thead>
+                        <tr>
+                            <th className="revenu-table__header">Opération</th>
+                            <th className="revenu-table__header">Date</th>
+                            <th className="revenu-table__header">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {depenses?.map((depense) => {
+                            if (user?.user_id === depense.utilisateur && depense.type === 'OUTCOME') {
+                                return (
+                                    <Fragment key={depense.id}>
+                                        <tr className="revenu-table__item">
+                                            <td className="revenu-table__item revenu-table__item--title">{depense.short_description}</td>
+                                            <td className="revenu-table__item revenu-table__item--date">{depense.date}</td>
+                                            <td className="revenu-table__item revenu-table__item--amount">{depense.montant} €</td>
+                                        </tr>
+                                    </Fragment>
+                                );
+                            }
+                            return null;
+                        })}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
