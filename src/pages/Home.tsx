@@ -65,7 +65,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
 
     return (
         <div className="home-main-container">
-            <>{console.log(depenses)}</>
+            <>{console.log('depenses: ', depenses)}</>
             <div className="cards-container text-center">
                 <div className="card">
                     <div className="card-body">
@@ -94,7 +94,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                     </div>
                 </div>
             </div>
-            <div>
+            <div className="global-chart">
                 <GlobalDonutChart depenses={depenses ?? []} />
             </div>
             <div className="table-responsive-sm">

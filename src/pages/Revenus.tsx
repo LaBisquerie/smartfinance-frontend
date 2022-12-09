@@ -10,7 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import RevenusBarChart from '../components/RevenusBarChart';
 
-export interface RevenuPageProps { }
+export interface RevenuPageProps {}
 
 export type Revenu = {
     id: number;
@@ -24,28 +24,27 @@ export type Revenu = {
 };
 
 const monthRequest: Record<string, { date_after: string; date_before: string }> = {
-    janvier: { date_after: "2022-01-01", date_before: "2022-01-31" },
-    fevrier: { date_after: "2022-02-01", date_before: "2022-02-28" },
-    mars: { date_after: "2022-03-01", date_before: "2022-03-31" },
-    avril: { date_after: "2022-04-01", date_before: "2022-04-30" },
-    mai: { date_after: "2022-05-01", date_before: "2022-05-31" },
-    juin: { date_after: "2022-06-01", date_before: "2022-06-30" },
-    juillet: { date_after: "2022-07-01", date_before: "2022-07-31" },
-    aout: { date_after: "2022-08-01", date_before: "2022-08-31" },
-    septembre: { date_after: "2022-09-01", date_before: "2022-09-30" },
-    octobre: { date_after: "2022-10-01", date_before: "2022-10-31" },
-    novembre: { date_after: "2022-11-01", date_before: "2022-11-30" },
-    decembre: { date_after: "2022-12-01", date_before: "2022-12-31" },
-    allMonth: { date_after: "2022-01-01", date_before: "2022-12-31" }
+    janvier: { date_after: '2022-01-01', date_before: '2022-01-31' },
+    fevrier: { date_after: '2022-02-01', date_before: '2022-02-28' },
+    mars: { date_after: '2022-03-01', date_before: '2022-03-31' },
+    avril: { date_after: '2022-04-01', date_before: '2022-04-30' },
+    mai: { date_after: '2022-05-01', date_before: '2022-05-31' },
+    juin: { date_after: '2022-06-01', date_before: '2022-06-30' },
+    juillet: { date_after: '2022-07-01', date_before: '2022-07-31' },
+    aout: { date_after: '2022-08-01', date_before: '2022-08-31' },
+    septembre: { date_after: '2022-09-01', date_before: '2022-09-30' },
+    octobre: { date_after: '2022-10-01', date_before: '2022-10-31' },
+    novembre: { date_after: '2022-11-01', date_before: '2022-11-30' },
+    decembre: { date_after: '2022-12-01', date_before: '2022-12-31' },
+    allMonth: { date_after: '2022-01-01', date_before: '2022-12-31' }
 };
 
 type Category = {
     nom: string;
     id: number;
-}
+};
 
 const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
-
     const [selectedRevenu, setSelectedRevenu] = useState<Revenu | undefined>();
     const [revenuForm, setRevenuForm] = useState(false);
     const [categoryForm, setCategoryForm] = useState(false);
@@ -59,7 +58,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
     const [selectedCategoryValue, setSelectedCategoryValue] = useState('');
     const today = format(new Date(), 'yyyy-MM-dd');
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-    const [selectedMonthValue, setSelectedMonthValue] = useState("allMonth");
+    const [selectedMonthValue, setSelectedMonthValue] = useState('allMonth');
     const [selectedFilterCategory, setSelectedFilterCategory] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [categoryDesc, setCategoryDesc] = useState('');
@@ -69,7 +68,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             setDescBudget('');
             setAmount(0);
             setSelectedDate(new Date());
-            setSelectedCategoryValue("");
+            setSelectedCategoryValue('');
         }
         setRevenuForm(!revenuForm);
     };
@@ -80,7 +79,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             setCategoryDesc('');
         }
         setCategoryForm(!categoryForm);
-    }
+    };
 
     const toggleUpdateForm = (revenu?: Revenu) => {
         if (revenu !== undefined && !updateRevenuForm) {
@@ -104,7 +103,6 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         setSelectedCategoryValue(value);
     };
 
-
     // !!!
     useEffect(() => {
         const currentMonth = monthRequest[selectedMonthValue]!;
@@ -112,7 +110,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             .then((response) => response.json())
             .then((res) => setRevenus(res))
             .catch((err) => console.log(err));
-    }, [selectedFilterCategory, selectedMonthValue])
+    }, [selectedFilterCategory, selectedMonthValue]);
 
     const handleCategorySubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -129,7 +127,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             .catch((err) => console.log(err));
     }, []);
 
-    const createRevenuCategory = async (nom : string, description: string) => {
+    const createRevenuCategory = async (nom: string, description: string) => {
         const response = await fetch('http://localhost:8000/api/categories/', {
             method: 'POST',
             headers: {
@@ -159,7 +157,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         } else {
             console.log('Something went wrong !');
         }
-    }
+    };
 
     const createRevenu = async (categorie_name: string, short_description: string, montant: number, date: string, categorie: number) => {
         const response = await fetch('http://localhost:8000/api/budgets/', {
@@ -168,7 +166,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                categorie_name: categories?.find(category => category.id === categorie)?.nom ?? "",
+                categorie_name: categories?.find((category) => category.id === categorie)?.nom ?? '',
                 short_description,
                 montant,
                 type: 'INCOME',
@@ -196,7 +194,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                categorie_name: categories?.find(category => category.id === categorie)?.nom ?? "",
+                categorie_name: categories?.find((category) => category.id === categorie)?.nom ?? '',
                 short_description,
                 montant,
                 type: 'INCOME',
@@ -245,7 +243,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
         e.preventDefault();
         createRevenuCategory(categoryName, categoryDesc);
         setCategoryForm(!categoryForm);
-    }
+    };
 
     const handleUpdateSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -339,11 +337,25 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                                 <form className="revenu-form" onSubmit={handleAddCategorySubmit}>
                                     <div className="revenu-form-item">
                                         <label className="revenu-form-item__label">Nom de la catégorie</label>
-                                        <input type="text" className="revenu-form-item__input" id="categoryName" name="categoryName" onChange={(e) => setCategoryName(e.target.value)} value={categoryName} />
+                                        <input
+                                            type="text"
+                                            className="revenu-form-item__input"
+                                            id="categoryName"
+                                            name="categoryName"
+                                            onChange={(e) => setCategoryName(e.target.value)}
+                                            value={categoryName}
+                                        />
                                     </div>
                                     <div className="revenu-form-item">
                                         <label className="revenu-form__label">Description de la catégorie</label>
-                                        <input type="text" className="revenu-form-item__input" id="categoryDesc" name="categoryDesc" onChange={(e) => setCategoryDesc(e.target.value)} value={categoryDesc} />
+                                        <input
+                                            type="text"
+                                            className="revenu-form-item__input"
+                                            id="categoryDesc"
+                                            name="categoryDesc"
+                                            onChange={(e) => setCategoryDesc(e.target.value)}
+                                            value={categoryDesc}
+                                        />
                                     </div>
                                     <button type="submit" className="btn btn-primary revenu-form__btn">
                                         Ajouter
@@ -353,7 +365,7 @@ const RevenusPage: React.FunctionComponent<RevenuPageProps> = () => {
                         </div>
                     </div>
                 )}
-                <div className="revenu-graph">
+                <div className="revenu-chart">
                     <RevenusBarChart revenus={revenus ?? []} />
                 </div>
                 <div className="revenu-list">
