@@ -39,7 +39,8 @@
     margin-bottom: 0;
 }
 
-.revenu-header__btn {
+.revenu-header__btn,
+.depense-header__btn {
     border: 2px solid $primary;
     width: fit-content;
     border-radius: 50rem;
@@ -54,6 +55,12 @@
         @include media-breakpoint-up(md) {
             margin-left: auto;
         }
+    }
+}
+
+.depense-header__btn--first {
+    @include media-breakpoint-up(md) {
+        margin-left: auto;
     }
 }
 
