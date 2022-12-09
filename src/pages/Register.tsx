@@ -7,15 +7,13 @@ interface RegisterPageProps {}
 
 const RegisterPage: React.FunctionComponent<RegisterPageProps> = () => {
     const { registerUser } = useAuth();
-    const [firstName, setFirstname] = useState('');
-    const [lastname, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
     const handleSubmit = (e : SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (password === passwordConfirm) registerUser(email, password, passwordConfirm, firstName, lastname)
+        if (password === passwordConfirm) registerUser(email, password, passwordConfirm)
     }
 
     return (
@@ -31,16 +29,6 @@ const RegisterPage: React.FunctionComponent<RegisterPageProps> = () => {
                                         <h1>Inscription</h1>
                                     </div>
                                     <form onSubmit={handleSubmit}>
-                                        <div className="form-items py-2">
-                                            <div className="form-item">
-                                                <label className="form-label">Prénom</label>
-                                                <input type="text" className="form-control" id="firstname" name='firstname' onChange={(e) => setFirstname(e.target.value)} value={firstName} required/>
-                                            </div>
-                                            <div className="form-item">
-                                                <label className="form-label">Nom</label>
-                                                <input type="text" className="form-control" id="lastname" name='lastname' onChange={(e) => setLastName(e.target.value)} value={lastname} required/>
-                                            </div>
-                                        </div>
                                         <div className="form-items py-2">
                                             <div className="form-item form-item__mail">
                                                 <label className="form-label">E-mail</label>
